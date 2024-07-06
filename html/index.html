@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generacion de requerimientos</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/app/css/styles.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Generacion de requerimientos</h2>
+        <form id="consulta-form">
+            <div class="form-group">
+                <label for="inputText">Introduce tus necesidades:</label>
+                <input type="text" class="form-control" id="inputText" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+        <div class="mt-4" id="response-container"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $('#consulta-form').on('submit', function(e) {
+            e.preventDefault();
+            let messages = [$('#inputText').val()];
+            $.ajax({
+                url: '/consulta',
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ messages: messages }),
+                success: function(response) {
+                    if (response.error) {
+                        $('#response-container').html('<div class="alert alert-danger" role="alert">' + response.error + '</div>');
+                    } else {
+                        let formattedResponse = response.responses.join('<br>'); // Join responses with <br> tags
+                        $('#response-container').html('<h4>Respuestas:</h4><div>' + formattedResponse + '</div>');
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    $('#response-container').html('<div class="alert alert-danger" role="alert">Error en la consulta: ' + textStatus + '</div>');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,10 @@
+body {
+    background-color: #f8f9fa;
+}
+
+#response-container {
+    background: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
